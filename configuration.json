@@ -1,15 +1,16 @@
 {
   "Version": "0.0",
-  "LogLevel": "Verbose",
+  "LogLevel": "Debug",
+  "TelemetryEnableTrace": false,
   "workaroundForQuerySOAPBugEnabled": false,
   "Source": {
     "$type": "TfsTeamProjectConfig",
-    "Collection": "https://dev.azure.com/nkdagility-preview/",
-    "Project": "migrationSource1",
+    "Collection": "URL_TO_TFS",
+    "Project": "TFS PROJECT NAME",
     "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
-    "AuthenticationMode": "Prompt",
+    "AuthenticationMode": "AccessToken",
     "AllowCrossProjectLinking": false,
-    "PersonalAccessToken": "rrsne75npwj5ctn5vm337nrxiqlvdkfmcbkqrubl6ushts6syi5a",
+    "PersonalAccessToken": "Access Token Here",
     "LanguageMaps": {
       "AreaPath": "Area",
       "IterationPath": "Iteration"
@@ -17,12 +18,12 @@
   },
   "Target": {
     "$type": "TfsTeamProjectConfig",
-    "Collection": "https://dev.azure.com/nkdagility-preview/",
-    "Project": "migration Target 1",
-    "ReflectedWorkItemIDFieldName": "nkdScrum.ReflectedWorkItemId",
-    "AuthenticationMode": "Prompt",
+    "Collection": "URL_TO_CLOUD_ADO",
+    "Project": "ADO PROJECT NAME",
+    "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
+    "AuthenticationMode": "AccessToken",
     "AllowCrossProjectLinking": false,
-    "PersonalAccessToken": "rrsne75npwj5ctn5vm337nrxiqlvdkfmcbkqrubl6ushts6syi5a",
+    "PersonalAccessToken": "Access Token Here",
     "LanguageMaps": {
       "AreaPath": "Area",
       "IterationPath": "Iteration"
@@ -30,14 +31,38 @@
   },
   "FieldMaps": [
     {
-      "$type": "TreeToTagMapConfig",
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "User Story",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "To Do",
+      "valueMapping": {
+        "Active": "Approved",
+        "New": "New",
+        "Resolved": "Done",
+        "Closed": "Done",
+        "Removed": "Removed",
+        "In UAT": "Committed"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
       "WorkItemTypeName": "*",
-      "toSkip": 3,
-      "timeTravel": 1
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "To Do",
+      "valueMapping": {
+        "Active": "Active",
+        "New": "New",
+        "Resolved": "Resolved",
+        "Closed": "Closed",
+        "Removed": "Removed",
+        "In UAT": "In UAT"
+      }
     }
   ],
   "WorkItemTypeDefinition": {
-    "sourceWorkItemTypeName": "targetWorkItemTypeName"
+    "User Story": "User Story"
   },
   "GitRepoMapping": null,
   "CommonEnrichersConfig": [
@@ -47,33 +72,35 @@
       "NodeBasePaths": [],
       "AreaMaps": {},
       "IterationMaps": {},
-      "ShouldCreateMissingRevisionPaths": true
+      "ShouldCreateMissingRevisionPaths": false
     }
   ],
   "Processors": [
     {
-      "$type": "ExportUsersForMappingConfig",
+      "$type": "AzureDevOpsPipelineProcessorOptions",
       "Enabled": false,
-      "LocalExportJsonFile": "c:\\temp\\ExportUsersForMappingConfig.json",
-      "WIQLQuery": "SELECT [System.Id], [System.Tags] FROM WorkItems WHERE [System.TeamProject] = @TeamProject AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan') ORDER BY [System.ChangedDate] desc",
-      "IdentityFieldsToCheck": [
-        "System.AssignedTo",
-        "System.ChangedBy",
-        "System.CreatedBy",
-        "Microsoft.VSTS.Common.ActivatedBy",
-        "Microsoft.VSTS.Common.ResolvedBy",
-        "Microsoft.VSTS.Common.ClosedBy"
-      ]
+      "MigrateBuildPipelines": true,
+      "MigrateReleasePipelines": false,
+      "MigrateTaskGroups": false,
+      "MigrateVariableGroups": false,
+      "MigrateServiceConnections": false,
+      "BuildPipelines": null,
+      "ReleasePipelines": null,
+      "RefName": null,
+      "SourceName": "Source",
+      "TargetName": "Target",
+      "RepositoryNameMaps": {}
     },
-    //{
-    //  "$type": "WorkItemDeleteConfig",
-    //  "Enabled": true,
-    //  "WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan')",
-    //  "WIQLOrderBit": "[System.ChangedDate] desc"
-    //},
+    {
+      "$type": "TeamMigrationConfig",
+      "Enabled": true,
+      "PrefixProjectToNodes": false,
+      "EnableTeamSettingsMigration": true,
+      "FixTeamSettingsForExistingTeams": false
+    },
     {
       "$type": "WorkItemMigrationConfig",
-      "Enabled": true,
+      "Enabled": false,
       "ReplayRevisions": true,
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
@@ -91,18 +118,39 @@
       "AttachmentMaxSize": 480000000,
       "AttachRevisionHistory": false,
       "LinkMigrationSaveEachAsAdded": false,
-      "GenerateMigrationComment": true,
+      "GenerateMigrationComment": false,
       "WorkItemIDs": null,
       "MaxRevisions": 0,
       "NodeStructureEnricherEnabled": true,
       "UseCommonNodeStructureEnricherConfig": false,
-      "ShouldCreateMissingRevisionPaths": false,
+      "StopMigrationOnMissingAreaIterationNodes": false,
       "NodeBasePaths": [],
       "AreaMaps": {},
-      "IterationMaps": {
-      },
+      "IterationMaps": {},
       "MaxGracefulFailures": 0
     }
 
-  ]
+  ],
+  "Endpoints": {
+    "AzureDevOpsEndpoints": [
+      {
+        "name": "Source",
+        "$type": "AzureDevOpsEndpointOptions",
+        "Organisation": "URL_TO_TFS",
+        "Project": "TFS PROJECT NAME",
+        "AuthenticationMode": "AccessToken",
+        "AccessToken": "Access Token Here",
+        "EndpointEnrichers": null
+      },
+      {
+        "Name": "Target",
+        "$type": "AzureDevOpsEndpointOptions",
+        "Organisation": "URL_TO_CLOUD_ADO",
+        "Project": "ADO PROJECT NAME",
+        "AuthenticationMode": "AccessToken",
+        "AccessToken": "Access Token Here",
+        "EndpointEnrichers": null
+      }
+    ]
+  }
 }
