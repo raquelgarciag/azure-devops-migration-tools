@@ -11,7 +11,7 @@
         </member>
         <member name="F:ThisAssembly.Git.IsDirtyString">
             <summary>
-            => @"true"
+            => @"false"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.RepositoryUrl">
@@ -21,22 +21,22 @@
         </member>
         <member name="F:ThisAssembly.Git.Branch">
             <summary>
-            => @"refactor/removeRedundantFlags"
+            => @"bug/1826-part2"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.Commit">
             <summary>
-            => @"25a7452"
+            => @"82338e3"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.Sha">
             <summary>
-            => @"25a74525e09dc7428415d610aa0ef397bf3eddb1"
+            => @"82338e38ae4cd0a4755e4b5841a39d6560132f5c"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.CommitDate">
             <summary>
-            => @"2023-12-20T10:47:02+00:00"
+            => @"2024-01-15T14:51:52+00:00"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.Commits">
@@ -46,12 +46,12 @@
         </member>
         <member name="F:ThisAssembly.Git.Tag">
             <summary>
-            => @"v14.3.7-1-g25a7452"
+            => @"v14.4.2-1-g82338e3"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.BaseTag">
             <summary>
-            => @"v14.3.7"
+            => @"v14.4.2"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.BaseVersion.Major">
@@ -61,12 +61,12 @@
         </member>
         <member name="F:ThisAssembly.Git.BaseVersion.Minor">
             <summary>
-            => @"3"
+            => @"4"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.BaseVersion.Patch">
             <summary>
-            => @"7"
+            => @"2"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.SemVer.Major">
@@ -76,12 +76,12 @@
         </member>
         <member name="F:ThisAssembly.Git.SemVer.Minor">
             <summary>
-            => @"3"
+            => @"4"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.SemVer.Patch">
             <summary>
-            => @"8"
+            => @"3"
             </summary>
         </member>
         <member name="F:ThisAssembly.Git.SemVer.Label">
