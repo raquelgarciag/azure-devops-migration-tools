@@ -5,12 +5,12 @@
   "workaroundForQuerySOAPBugEnabled": false,
   "Source": {
     "$type": "TfsTeamProjectConfig",
-    "Collection": "URL_TO_TFS",
-    "Project": "TFS PROJECT NAME",
+    "Collection": "http://desktop-e1efr6c/MyCollection",
+    "Project": "MySource",
     "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
-    "AuthenticationMode": "AccessToken",
+    "AuthenticationMode": "Prompt",
     "AllowCrossProjectLinking": false,
-    "PersonalAccessToken": "Access Token Here",
+    "PersonalAccessToken": "skvrsfbjw2g6zdvvd4it7724l4c6iyio5n4zxs2mdwveizlc224q",
     "LanguageMaps": {
       "AreaPath": "Area",
       "IterationPath": "Iteration"
@@ -18,48 +18,25 @@
   },
   "Target": {
     "$type": "TfsTeamProjectConfig",
-    "Collection": "URL_TO_CLOUD_ADO",
-    "Project": "ADO PROJECT NAME",
+    "Collection": "https://dev.azure.com/raquelgarx0655/",
+    "Project": "Test",
     "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
     "AuthenticationMode": "AccessToken",
     "AllowCrossProjectLinking": false,
-    "PersonalAccessToken": "Access Token Here",
+    "PersonalAccessToken": "py64r2jhkiztznwexh2qqj4x72sx5ufyj6jxdlr6hjcdhxr4krfq",
     "LanguageMaps": {
       "AreaPath": "Area",
       "IterationPath": "Iteration"
     }
   },
   "FieldMaps": [
+
     {
-      "$type": "FieldValueMapConfig",
+      "$type": "FieldSkipMapConfig",
       "WorkItemTypeName": "User Story",
-      "sourceField": "System.State",
-      "targetField": "System.State",
-      "defaultValue": "To Do",
-      "valueMapping": {
-        "Active": "Approved",
-        "New": "New",
-        "Resolved": "Done",
-        "Closed": "Done",
-        "Removed": "Removed",
-        "In UAT": "Committed"
-      }
-    },
-    {
-      "$type": "FieldValueMapConfig",
-      "WorkItemTypeName": "*",
-      "sourceField": "System.State",
-      "targetField": "System.State",
-      "defaultValue": "To Do",
-      "valueMapping": {
-        "Active": "Active",
-        "New": "New",
-        "Resolved": "Resolved",
-        "Closed": "Closed",
-        "Removed": "Removed",
-        "In UAT": "In UAT"
-      }
+      "targetField": "Custom.Raquel"
     }
+
   ],
   "WorkItemTypeDefinition": {
     "User Story": "User Story"
@@ -72,13 +49,13 @@
       "NodeBasePaths": [],
       "AreaMaps": {},
       "IterationMaps": {},
-      "ShouldCreateMissingRevisionPaths": false
+      "ShouldCreateMissingRevisionPaths": true
     }
   ],
   "Processors": [
     {
       "$type": "AzureDevOpsPipelineProcessorOptions",
-      "Enabled": false,
+      "Enabled": true,
       "MigrateBuildPipelines": true,
       "MigrateReleasePipelines": false,
       "MigrateTaskGroups": false,
@@ -89,39 +66,40 @@
       "RefName": null,
       "SourceName": "Source",
       "TargetName": "Target",
-      "RepositoryNameMaps": {}
+      "RepositoryNameMaps": {},
+      "versionParameter": "5.1"
     },
     {
       "$type": "TeamMigrationConfig",
-      "Enabled": true,
+      "Enabled": false,
       "PrefixProjectToNodes": false,
       "EnableTeamSettingsMigration": true,
       "FixTeamSettingsForExistingTeams": false
     },
     {
       "$type": "WorkItemMigrationConfig",
-      "Enabled": false,
+      "Enabled": true,
       "ReplayRevisions": true,
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
       "UpdateCreatedBy": true,
-      "WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan')",
+      "WIQLQueryBit": "AND [System.Tags] CONTAINS 'crc'",
       "WIQLOrderBit": "[System.ChangedDate] desc",
       "LinkMigration": true,
       "AttachmentMigration": true,
       "AttachmentWorkingPath": "c:\\temp\\WorkItemAttachmentWorkingFolder\\",
       "FixHtmlAttachmentLinks": false,
-      "SkipToFinalRevisedWorkItemType": false,
+      "SkipToFinalRevisedWorkItemType": true,
       "WorkItemCreateRetryLimit": 5,
-      "FilterWorkItemsThatAlreadyExistInTarget": false,
+      "FilterWorkItemsThatAlreadyExistInTarget": true,
       "PauseAfterEachWorkItem": false,
       "AttachmentMaxSize": 480000000,
-      "AttachRevisionHistory": false,
+      "AttachRevisionHistory": true,
       "LinkMigrationSaveEachAsAdded": false,
-      "GenerateMigrationComment": false,
+      "GenerateMigrationComment": true,
       "WorkItemIDs": null,
       "MaxRevisions": 0,
-      "NodeStructureEnricherEnabled": true,
+      "NodeStructureEnricherEnabled": false,
       "UseCommonNodeStructureEnricherConfig": false,
       "StopMigrationOnMissingAreaIterationNodes": false,
       "NodeBasePaths": [],
@@ -136,21 +114,23 @@
       {
         "name": "Source",
         "$type": "AzureDevOpsEndpointOptions",
-        "Organisation": "URL_TO_TFS",
-        "Project": "TFS PROJECT NAME",
+        "Organisation": "http://desktop-e1efr6c/MyCollection",
+        "Project": "MySource",
         "AuthenticationMode": "AccessToken",
-        "AccessToken": "Access Token Here",
+        "AccessToken": "skvrsfbjw2g6zdvvd4it7724l4c6iyio5n4zxs2mdwveizlc224q",
         "EndpointEnrichers": null
       },
       {
         "Name": "Target",
         "$type": "AzureDevOpsEndpointOptions",
-        "Organisation": "URL_TO_CLOUD_ADO",
-        "Project": "ADO PROJECT NAME",
+        "Organisation": "https://dev.azure.com/raquelgarx0655",
+        "Project": "Test",
         "AuthenticationMode": "AccessToken",
-        "AccessToken": "Access Token Here",
+        "AccessToken": "py64r2jhkiztznwexh2qqj4x72sx5ufyj6jxdlr6hjcdhxr4krfq",
         "EndpointEnrichers": null
       }
     ]
   }
 }
+
+
